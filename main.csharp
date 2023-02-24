@@ -1,0 +1,342 @@
+using System;
+using System.Collections.Generic;
+
+namespace ConsoleChatRPG
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Welcome to the Console Chat RPG!");
+            Console.WriteLine("Please enter your name:");
+            string playerName = Console.ReadLine();
+            Console.WriteLine($"Welcome, {playerName}!");
+            Console.WriteLine("Type 'help' for a list of commands.");
+
+            Random rand = new Random();
+
+            List<string> inventory = new List<string>();
+            int health = 10;
+            bool isRunning = true;
+
+            while (isRunning)
+            {
+                Console.Write("> ");
+                string input = Console.ReadLine().ToLower();
+
+                switch (input)
+                {
+                    case "help":
+                        Console.WriteLine("Commands:");
+                        Console.WriteLine("help - show this list");
+                        Console.WriteLine("inventory - show your inventory");
+                        Console.WriteLine("explore - go on an adventure");
+                        Console.WriteLine("fight - battle a monster");
+                        Console.WriteLine("exit - exit the game");
+                        break;
+
+                    case "inventory":
+                        if (inventory.Count == 0)
+                        {
+                            Console.WriteLine("Your inventory is empty.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Inventory:");
+                            foreach (string item in inventory)
+                            {
+                                Console.WriteLine(item);
+                            }
+                        }
+                        break;
+
+                    case "explore":
+                        Console.WriteLine("You venture forth into the unknown...");
+                        int encounter = rand.Next(1, 4);
+                        switch (encounter)
+                        {
+                            case 1:
+                                Console.WriteLine("You find a treasure chest!");
+                                int loot = rand.Next(1, 4);
+                                for (int i = 0; i < loot; i++)
+                                {
+                                    int item = rand.Next(1, 4);
+                                    switch (item)
+                                    {
+                                        case 1:
+                                            Console.WriteLine("You found a health potion!");
+                                            inventory.Add("Health Potion");
+                                            break;
+                                        case 2:
+                                            Console.WriteLine("You found a sword!");
+                                            inventory.Add("Sword");
+                                            break;
+                                        case 3:
+                                            Console.WriteLine("You found a shield!");
+                                            inventory.Add("Shield");
+                                            break;
+                                    }
+                                }
+                                break;
+                            case 2:
+                                Console.WriteLine("You encounter a fierce monster!");
+                                int monsterHealth = 5;
+                                while (monsterHealth > 0 && health > 0)
+                                {
+                                    Console.WriteLine($"You have {health} health.");
+                                    Console.WriteLine($"The monster has {monsterHealth} health.");
+                                    Console.WriteLine("Choose an action:");
+                                    Console.WriteLine("1. Attack");
+                                    Console.WriteLine("2. Defend");
+                                    Console.Write("> ");
+                                    int action = Convert.ToInt32(Console.ReadLine());
+                                    switch (action)
+                                    {
+                                        case 1:
+                                            Console.WriteLine("You attack the monster!");
+                                            int damage = rand.Next(1, 4);
+                                            monsterHealth -= damage;
+                                            Console.WriteLine($"You deal {damage} damage!");
+                                            break;
+                                        case 2:
+                                            Console.WriteLine("You defend yourself.");
+                                            break;
+                                    }
+                                    if (monsterHealth > 0)
+                                    {
+                                        Console.WriteLine("The monster attacks you!");
+                                        int monsterDamage = rand.Next(1, 4);
+                                        if (inventory.Contains("Shield"))
+                                        {
+                                            Console.WriteLine("Your shield absorbs some of the damage!");
+                                            monsterDamage -= 1;
+                                        }
+                                        health -= monsterDamage;
+                                        Console.WriteLine($"You take {monsterDamage} damage!");
+                                    }
+                                }
+                                if (health <= 0)
+                                {
+                                    Console.WriteLine("You have been defeated...");
+                                    isRunning = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("You have defeated the monster!");
+                                    int reward = rand.Next(1, 4);
+                                    for (int i = 0; i < reward; i++)
+                                    {
+                                        int item = rand.Next(1, 4);
+                                        switch (item)
+                                        {
+                                            case 1:
+                                                Console.WriteLine("You found a health potion!");
+                                                inventory.Add("Health Potion");
+                                                break;
+                                            case 2:
+                                                Console.WriteLine("You found a sword!");
+                                                inventory.Add("Sword");
+                                                break;
+                                            case 3:
+                                                Console.WriteLine("You found a shield!");
+                                                inventory.Add("Shield");
+                                                break;
+                                        }
+                                    }
+                                }
+                                break;
+                            case 3:
+                                Console.WriteLine("You find nothing of interest.");
+                                break;
+                        }
+                        break;
+
+                    case "fight":
+                        Console.WriteLine("Choose a monster to fight:");
+                        Console.WriteLine("1. Goblin (3 health)");
+                        Console.WriteLine("2. Orc (5 health)");
+                        Console.WriteLine("3. Dragon (10 health)");
+                        Console.Write("> ");
+                        int monsterChoice = Convert.ToInt32(Console.ReadLine());
+                        switch (monsterChoice)
+                        {
+                            case 1:
+                                Console.WriteLine("You encounter a goblin!");
+                                int goblinHealth = 3;
+                                while (goblinHealth > 0 && health > 0)
+                                {
+                                    Console.WriteLine($"You have {health} health.");
+                                    Console.WriteLine($"The goblin has {goblinHealth} health.");
+                                    Console.WriteLine("Choose an action:");
+                                    Console.WriteLine("1. Attack");
+                                    Console.WriteLine("2. Defend");
+                                    Console.Write("> ");
+                                    int action = Convert.ToInt32(Console.ReadLine());
+                                    switch (action)
+                                    {
+                                        case 1:
+                                            Console.WriteLine("You attack the goblin!");
+          
+                                            int damage = rand.Next(1, 4);
+                                            goblinHealth -= damage;
+                                            Console.WriteLine($"You deal {damage} damage!");
+                                            break;
+                                        case 2:
+                                            Console.WriteLine("You defend yourself.");
+                                            break;
+                                    }
+                                    if (goblinHealth > 0)
+                                    {
+                                        Console.WriteLine("The goblin attacks you!");
+                                        int goblinDamage = rand.Next(1, 4);
+                                        if (inventory.Contains("Shield"))
+                                        {
+                                            Console.WriteLine("Your shield absorbs some of the damage!");
+                                            goblinDamage -= 1;
+                                        }
+                                        health -= goblinDamage;
+                                        Console.WriteLine($"You take {goblinDamage} damage!");
+                                    }
+                                }
+                                if (health <= 0)
+                                {
+                                    Console.WriteLine("You have been defeated...");
+                                    isRunning = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("You have defeated the goblin!");
+                                    Console.WriteLine("You found a health potion!");
+                                    inventory.Add("Health Potion");
+                                }
+                                break;
+                            case 2:
+                                Console.WriteLine("You encounter an orc!");
+                                int orcHealth = 5;
+                                while (orcHealth > 0 && health > 0)
+                                {
+                                    Console.WriteLine($"You have {health} health.");
+                                    Console.WriteLine($"The orc has {orcHealth} health.");
+                                    Console.WriteLine("Choose an action:");
+                                    Console.WriteLine("1. Attack");
+                                    Console.WriteLine("2. Defend");
+                                    Console.Write("> ");
+                                    int action = Convert.ToInt32(Console.ReadLine());
+                                    switch (action)
+                                    {
+                                        case 1:
+                                            Console.WriteLine("You attack the orc!");
+                                            int damage = rand.Next(1, 4);
+                                            orcHealth -= damage;
+                                            Console.WriteLine($"You deal {damage} damage!");
+                                            break;
+                                        case 2:
+                                            Console.WriteLine("You defend yourself.");
+                                            break;
+                                    }
+                                    if (orcHealth > 0)
+                                    {
+                                        Console.WriteLine("The orc attacks you!");
+                                        int orcDamage = rand.Next(1, 4);
+                                        if (inventory.Contains("Shield"))
+                                        {
+                                            Console.WriteLine("Your shield absorbs some of the damage!");
+                                            orcDamage -= 1;
+                                        }
+                                        health -= orcDamage;
+                                        Console.WriteLine($"You take {orcDamage} damage!");
+                                    }
+                                }
+                                if (health <= 0)
+                                {
+                                    Console.WriteLine("You have been defeated...");
+                                    isRunning = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("You have defeated the orc!");
+                                    Console.WriteLine("You found a sword!");
+                                    inventory.Add("Sword");
+                                }
+                                break;
+                            case 3:
+                                Console.WriteLine("You encounter a dragon!");
+                                int dragonHealth = 10;
+                                while (dragonHealth > 0 && health > 0)
+                                {
+                                    Console.WriteLine($"You have {health} health.");
+                                    Console.WriteLine($"The dragon has {dragonHealth} health.");
+                                    Console.WriteLine("Choose an action:");
+                                    Console.WriteLine("1. Attack");
+                                    Console.WriteLine("2. Defend");
+                                    Console.Write("> ");
+                                    int action = Convert.ToInt32(Console.ReadLine());
+                                    switch (action)
+                                    {
+                                        case 1:
+                                            Console.WriteLine("You attack the dragon!");
+                                            int damage = rand.Next(1, 4);
+                                            dragonHealth -= damage;
+                                            Console.WriteLine($"You deal {damage} damage!");
+                                            break;
+                                        case 2:
+                                            Console.WriteLine("You defend yourself.");
+                                            break;
+                                    }
+                                    if (dragonHealth > 0)
+                                    {
+                                        Console.WriteLine("The dragon attacks you!");
+                                        int dragonDamage = rand.Next(1, 4);
+                                        if (inventory.Contains("Shield"))
+                                        {
+                                            Console.WriteLine("Your shield absorbs some of the damage!");
+                                            dragonDamage -= 1;
+                                        }
+                                        health -= dragonDamage;
+                                        Console.WriteLine($"You take {dragonDamage} damage!");
+                                    }
+                                }
+                                if (health <= 0)
+                                {
+                                    Console.WriteLine("You have been defeated...");
+                                    isRunning = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("You have defeated the dragon!");
+                                    Console.WriteLine("You found a shield!");
+                                    inventory.Add("Shield");
+                                }
+                                break;
+                        }
+                        break;
+
+                        case "inv":
+
+                            if (inventory.Count == 0)
+                        {
+                                 Console.WriteLine("Your inventory is empty.");
+                        }
+                            else
+                        {
+                               Console.WriteLine("Your inventory:");
+                                foreach (string item in inventory)
+                            {
+                                Console.WriteLine(item);
+                            }
+                        }
+                        break;
+
+                    case "exit":
+                        Console.WriteLine("Goodbye!");
+                        isRunning = false;
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid command.");
+                        break;
+                }
+            }
+        }
+    }
+}                        
